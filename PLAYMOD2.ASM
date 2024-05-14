@@ -5,7 +5,7 @@
 ;
 ; 18/02/2017
 ;
-; [ Last Modification: 13/05/2024 ]
+; [ Last Modification: 14/05/2024 ]
 ;
 ; Derived from source code of 'PLAYWAV.COM' ('PLAYWAV.ASM') by Erdogan Tan
 ;							      (17/02/2017)
@@ -1620,7 +1620,9 @@ _delay_x_ms:
 ; ICHWAV.ASM
 ; PLAYMOD.ASM
 ; player internal variables and other equates.
-BUFFERSIZE	equ	2048*4		; 8K half buffer size. 18/02/2017
+;BUFFERSIZE	equ	2048*4		; 8K half buffer size. 18/02/2017
+; 14/05/2024
+BUFFERSIZE	equ	2560*4		
 ENDOFFILE	equ	BIT0		; flag for knowing end of file
 
 ;===========================================================================
@@ -1796,7 +1798,6 @@ _0:
 	;or	eax, IOC + BUP
 	; 12/05/2024
 	mov	eax, BUFFERSIZE/2
-	; 12/05/2024
 	or	eax, BUP ; (tuneloop without interrupt)
 	stosd
         loop    _0
@@ -1896,7 +1897,9 @@ DrawLoop:
 	mov     bx, dx			; (save Index)
 	mov     di, [Scope+bx]		; get old SCOPE pixel address
 	mov     byte [es:di], 0		; erase it!
-	lodsb				; get a sample (8-bit)
+	;lodsb				; get a sample (8-bit)
+	; 14/05/2024
+	lodsw
 	mov     bl, al			; calc new pixel address...
 	xor     bh, bh
 	shl     bx, 1
@@ -3447,7 +3450,7 @@ msg_2017:
 		db	'Tiny MOD Player by Erdogan Tan. May 2024.',10,13
 		db	'usage: playmod2 filename.mod', 10, 13, '$'
 		db	'18/02/2017',0
-		db	'13/05/2024',0
+		db	'14/05/2024',0
 
 Credits:	db	'Tiny MOD Player v0.1b by Carlos Hasan. July 1993.'
 CRLF:		; 13/05/2024
